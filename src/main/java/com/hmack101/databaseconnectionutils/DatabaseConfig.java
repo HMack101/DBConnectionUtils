@@ -101,11 +101,26 @@ public class DatabaseConfig {
     public void readJSONCofigurationFile(String filename) {
         ReadJSONConfigFile readObj = new ReadJSONConfigFile(filename);
         readObj.parse();
-        this.setName(readObj.getDBName());
-        this.setHost(readObj.getDBHost());
-        this.setPort(readObj.getDBPort());
-        this.setUser(readObj.getDBUser());
-        this.setPassword(readObj.getDBPassword());
+        
+        if (!readObj.getDBName().isEmpty()) {
+            this.setName(readObj.getDBName());
+        }
+        
+        if (!readObj.getDBHost().isEmpty()) {
+            this.setHost(readObj.getDBHost());
+        }
+        
+        if (!readObj.getDBPort().isEmpty()) {
+            this.setPort(readObj.getDBPort());
+        }
+        
+        if (!readObj.getDBUser().isEmpty()) {
+            this.setUser(readObj.getDBUser());
+        }
+        
+        if (!readObj.getDBPassword().isEmpty()) {
+            this.setPassword(readObj.getDBPassword());
+        }
     }
     
     public void readXMLConfigurationFile(String filename) {
