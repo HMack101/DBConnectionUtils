@@ -88,16 +88,32 @@ public class ReadJSONConfigFile {
        this.dbport = port; 
     }
     
-    public void setHTTPHost(String host) {
+    public String getHTTPHost () {
+        return this.httpHost;
+    }
+    
+    public void setHTTPHost (String host) {
         this.httpHost = host;
+    }
+    
+    public int getHTTPPort () {
+        return this.httpPort;
     }
     
     public void setHTTPPort (int port) {
         this.httpPort = port;
     }
     
+    public String getHTTPSHost () {
+        return this.httpsHost;
+    }
+    
     public void setHTTPSHost (String host) {
         this.httpsHost = host;
+    }
+    
+    public int getHTTPSPort () {
+        return this.httpsPort;
     }
     
     public void setHTTPSPort (int port) {
@@ -119,15 +135,15 @@ public class ReadJSONConfigFile {
             Object obj = parser.parse(new FileReader(this.getConfigFilename()));
  
             JSONObject jsonObject = (JSONObject) obj;
-            this.setDBName((String)jsonObject.get("dbname"));
-            this.setDBUser((String)jsonObject.get("dbuser"));
-            this.setDBPassword((String)jsonObject.get("dbpassword"));
-            this.setDBHost((String)jsonObject.get("dbhost"));
-            this.setDBPort((int)jsonObject.get("dbport"));           
+            this.setDBName((String)jsonObject.get("dbName"));
+            this.setDBUser((String)jsonObject.get("dbUser"));
+            this.setDBPassword((String)jsonObject.get("dbPassword"));
+            this.setDBHost((String)jsonObject.get("dbHost"));
+            this.setDBPort((int)jsonObject.get("dbPort"));           
             this.setHTTPHost((String)jsonObject.get("httpHost"));
-            this.setHTTPSHost((String)jsonObject.get("httpsHost"));
-            this.setHTTPSPort((int)jsonObject.get("httpsPort"));
             this.setHTTPPort((int)jsonObject.get("httpPort"));
+            this.setHTTPSHost((String)jsonObject.get("httpsHost"));
+            this.setHTTPSPort((int)jsonObject.get("httpsPort"));            
             
         } catch (Exception ex) {
             Logger.getLogger(ReadJSONConfigFile.class.getName()).log(Level.SEVERE, null, ex);
