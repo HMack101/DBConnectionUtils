@@ -6,7 +6,8 @@
 package com.hmack101.databaseconnectionutils;
 
 import com.hmack101.configurationutils.ConfigurationFileType;
-import com.hmack101.configurationutils.ReadJSONConfigFile;
+import com.hmack101.configurationutils.ReadConfigFile;
+
 
 
 /**
@@ -20,8 +21,8 @@ public class DatabaseConfig {
     private String name = null;
     private String user = null;
     private String password = null;
-    private String host = null;
-    private String port = null;
+    private String host = "localhost";
+    private int port = 5432;
     
     public DatabaseConfig(ConfigurationFileType type) {
         this.configType = type;
@@ -74,32 +75,16 @@ public class DatabaseConfig {
         this.host = host;
     }
       
-    public String setPort () {
+    public int getPort () {
         return this.port;
     }
         
-    public void setPort (String port) {
+    public void setPort (int port) {
        this.port = port; 
     }
-    
-    public DatabaseConfig readConfigurationFile(String filename) {
-        if (this.configType == ConfigurationFileType.json) {
-            this.readJSONCofigurationFile(filename);
-        }
-        
-        if (this.configType == ConfigurationFileType.xml) {
-            this.readXMLConfigurationFile(filename);
-        }
-                
-        if (this.configType == ConfigurationFileType.text) {
-            this.readTextConfigurationFile(filename);
-        }
-          
-        return this;
-    }
-        
-    public void readJSONCofigurationFile(String filename) {
-        ReadJSONConfigFile readObj = new ReadJSONConfigFile(filename);
+           
+    public void readCofigurationFile(String filename) {
+        ReadConfigFile readObj = new ReadConfigFile(filename, configType);
         readObj.parse();
         
         if (!readObj.getDBName().isEmpty()) {
@@ -110,7 +95,7 @@ public class DatabaseConfig {
             this.setHost(readObj.getDBHost());
         }
         
-        if (!readObj.getDBPort().isEmpty()) {
+        if (readObj.getDBPort() == 0) {
             this.setPort(readObj.getDBPort());
         }
         
@@ -121,14 +106,5 @@ public class DatabaseConfig {
         if (!readObj.getDBPassword().isEmpty()) {
             this.setPassword(readObj.getDBPassword());
         }
-    }
-    
-    public void readXMLConfigurationFile(String filename) {
-        
-    }
-    
-    public void readTextConfigurationFile(String filename) {
-        
-    }
-    
+    }      
 }

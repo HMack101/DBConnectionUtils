@@ -5,19 +5,12 @@
  */
 package com.hmack101.configurationutils;
 
-import java.io.FileReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 /**
  *
  * @author HMack101
  */
-public class ReadJSONConfigFile {
-    
+public class ReadConfigFile {
+    private ConfigurationFileType type = ConfigurationFileType.json;
     private String filename = null;
     
     private String dbname  = null;
@@ -31,15 +24,12 @@ public class ReadJSONConfigFile {
     private int httpsPort = 443;
     private int httpPort = 80;
     
-    public ReadJSONConfigFile() {
-        
-    }
     
-    
-    public ReadJSONConfigFile(String filename) {
+    public ReadConfigFile(String filename, ConfigurationFileType type) {
         this.filename = filename;
+        this.type = type;
     }
-        
+    
     public String getConfigFilename() {
         return this.filename;
     }
@@ -104,37 +94,27 @@ public class ReadJSONConfigFile {
         this.httpsPort = port;
     }
     
-    
-    
-    public Object parse (String filename) {
-        this.setConfigFilename(filename);
-        return this.parse();
-    }
-    
-    public Object parse () {
-        JSONParser parser = new JSONParser();
- 
-        try {
- 
-            Object obj = parser.parse(new FileReader(this.getConfigFilename()));
- 
-            JSONObject jsonObject = (JSONObject) obj;
-            this.setDBName((String)jsonObject.get("dbname"));
-            this.setDBUser((String)jsonObject.get("dbuser"));
-            this.setDBPassword((String)jsonObject.get("dbpassword"));
-            this.setDBHost((String)jsonObject.get("dbhost"));
-            this.setDBPort((int)jsonObject.get("dbport"));           
-            this.setHTTPHost((String)jsonObject.get("httpHost"));
-            this.setHTTPSHost((String)jsonObject.get("httpsHost"));
-            this.setHTTPSPort((int)jsonObject.get("httpsPort"));
-            this.setHTTPPort((int)jsonObject.get("httpPort"));
-            
-        } catch (Exception ex) {
-            Logger.getLogger(ReadJSONConfigFile.class.getName()).log(Level.SEVERE, null, ex);
+    public ReadConfigFile parse () {
+        if (filename == null || filename.isEmpty()) {
+            return null;
         }
         
-        return this;            
+        if (type == ConfigurationFileType.json) {
+            ReadJSONConfigFile jsonObj = new ReadJSONConfigFile();
+            return (ReadConfigFile)jsonObj.parse(this.filename);          
+        }  
+        
+        if (type == ConfigurationFileType.xml) {
+            ReadXMLConfigFile xmlObj = new ReadXMLConfigFile();
+            return (ReadConfigFile)xmlObj.parse();          
+        }  
+        
+        if (type == ConfigurationFileType.text) {
+            ReadTextConfigFile textObj = new ReadTextConfigFile();
+            return (ReadConfigFile)textObj.parse();          
+        }  
+        
+        return this;
     }
-    
     
 }
